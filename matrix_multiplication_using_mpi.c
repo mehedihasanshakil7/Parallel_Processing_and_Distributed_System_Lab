@@ -66,6 +66,9 @@ int main(int argc, char **argv) {
     MPI_Scatter(A, (K / size) * M * N, MPI_INT, localA, (K / size) * M * N, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Scatter(B, (K / size) * N * P, MPI_INT, localB, (K / size) * N * P, MPI_INT, 0, MPI_COMM_WORLD);
 
+    // Barrier to synchronize all processes before timing starts
+    MPI_Barrier(MPI_COMM_WORLD);
+    
     double startTime = MPI_Wtime();
 
     // Matrix multiplication
@@ -94,9 +97,6 @@ int main(int argc, char **argv) {
     //         display(M, P, R[k]);
     //     }
     // }
-
-    // Barrier to synchronize all processes before timing starts
-    MPI_Barrier(MPI_COMM_WORLD);
 
     // Print timing information for each process
     printf("Process %d: Time taken = %f seconds\n", rank, endTime - startTime);
